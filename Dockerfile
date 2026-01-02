@@ -1,5 +1,5 @@
 # U²-Net Background Removal Service
-# Production Dockerfile
+# Railway-optimized Dockerfile
 
 FROM python:3.10-slim
 
@@ -25,17 +25,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY app.py model_loader.py ./
 
-# Create non-root user for security
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
-USER appuser
+# Railway sets PORT automatically, but we'll use it
+ENV PORT=8000
 
-# Expose port
-EXPOSE 8000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
+# Expose port (Railway will map this)
+EXPOSE $PORT
 
 # Run the application
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
-
+# Railway sets PORT env var, but uvicorn defaults to 8000
+CMD uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}
