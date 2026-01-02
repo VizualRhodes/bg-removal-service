@@ -1,0 +1,20 @@
+# FastAPI and server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Image processing
+Pillow==10.1.0
+numpy==1.24.3
+
+# Background removal (U²-Net)
+rembg[new]==2.0.50
+
+# Optional: PyTorch CPU (rembg will install if needed, but explicit for control)
+# torch==2.1.0
+# torchvision==0.16.0
+
+# Note: rembg[new] includes all necessary dependencies including torch
+# For CPU-only: rembg will use CPU version of torch
+# For GPU: install torch with CUDA support separately
+
